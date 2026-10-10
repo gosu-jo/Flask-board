@@ -1,0 +1,48 @@
+<h1>게시판</h1>
+<table>
+    <thead>
+    
+
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>내용</th>
+            <th>삭제</th>
+            <th>수정</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+                <a href="/detail/{{ loop.index0 }}">{{ post["title"] }}</a>
+            </td>
+            <td>{{ post["author"] }}</td>
+            <td>{{ post["content"] }}</td>
+            <td>
+                <form action="/delete/{{ loop.index0 }}" method="post">
+                    <button type="submit">삭제</button>
+                </form>
+            </td>
+            <td>    
+                <a href="/edit/{{ loop.index0 }}">수정</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<form action="/write" method="post">
+    <fieldset>
+        <label for="title">제목</label>
+        <input type="text" minlength="1" maxlength="30" id="title" placeholder="제목입력" name="title" required>
+        <label for="author">작성자</label>
+        <input id="author" name="author" required placeholder="작성자입력">
+        <label for="content">내용</label>
+        <textarea id="content" placeholder="내용입력" minlength="1" maxlength="500" name="content" required ></textarea>
+        <button type="submit" name="boradcontent">글쓰기</button>
+    </fieldset>
+</form>

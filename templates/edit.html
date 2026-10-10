@@ -1,0 +1,18 @@
+<h1>게시판 내용 수정</h1>
+
+
+
+<form action="/update/{{ index }}" method="post">
+    <fieldset>
+        <legend>수정할 내용을 입력해주세요.</legend>
+
+        <label for="title">제목</label>
+        <input id="title" name="title" value="{{ post['title'] }}" required placeholder="제목입력">
+        <label for="author">작성자</label>
+        <input id="author" name="author" value="{{ post['author'] }}" required placeholder="작성자입력">
+        <label for="content">내용</label>
+        <textarea id="content" name="content" required placeholder="내용입력">{{ post['content'] }}</textarea>
+    </fieldset>
+
+    <button type="submit">수정작성</button>
+</form>
