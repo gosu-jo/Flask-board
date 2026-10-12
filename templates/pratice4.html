@@ -1,4 +1,9 @@
 <h1>게시판</h1>
+{% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+{% endwith %}
 <table>
     <thead>
     

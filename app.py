@@ -1,8 +1,21 @@
-from flask import Flask, render_template,request,redirect
+from flask import Flask, render_template,request,redirect,flash
 import json
 
 FILENAME ="posts.json"
 app = Flask(__name__)
+app.secret_key = "dev-secret-key"
+
+
+def load_posts():
+    try:
+        with open(FILENAME,"r",encoding="utf-8")as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+
+
+
 
 @app.route("/delete/<int:index>", methods=["POST"])
 def delete(index):
@@ -12,11 +25,12 @@ def delete(index):
     except FileNotFoundError:
         return redirect("/")
     if index < 0 or index >= len(posts):
-        return "게시글이 존재하지 않습니다.."
+        flash("게시글이 존재하지 않습니다.")
+        return redirect("/")
     posts.pop(index)
     with open(FILENAME,"w",encoding="utf-8")as file:
         json.dump(posts,file,ensure_ascii=False,indent=4)
-
+    flash("게시글이 삭제되었습니다.")
     return redirect("/")
 
 @app.route("/detail/<int:index>")
@@ -51,7 +65,8 @@ def update(index):
     author = request.form['author'].strip()
     content = request.form['content'].strip()
     if not (title and author and content):
-        return "제목,작성자,내용을입력해주세요."
+        flash("제목,작성자,내용을입력해주세요.")
+        return redirect("/")
     post = {
         'title' : title,
         'author' : author,
@@ -90,7 +105,8 @@ def write():
     author = request.form['author'].strip()
     content = request.form['content'].strip()
     if not (title and author and content):
-        return "제목,작성자,내용을입력해주세요."
+        flash("제목,작성자,내용을입력해주세요.")
+        return redirect("/")
     try:
         with open(FILENAME,"r",encoding="utf-8")as file:
             posts = json.load(file)
